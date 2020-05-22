@@ -14,11 +14,40 @@ class ChatUserScreen extends StatefulWidget {
 
 class _ChatUserScreenState extends State<ChatUserScreen> {
   List<User> _chatUsers;
+  bool _connectedToSocket;
+  String _connectMessage;
+
   @override
   void initState() {
     super.initState();
     _chatUsers = G.getUsersFor(G.loggedInUser);
+    _connectedToSocket = false;
+    _connectMessage = 'Connecting...';
+    _connectToSocket();
   }
+
+  _connectToSocket() {
+    print(
+        'Connecting Logged In User ${G.loggedInUser.name},${G.loggedInUser.id}');
+    G.initSocket();
+    G.socketUtils.initsocket(G.loggedInUser);
+    G.socketUtils.connectToSocket();
+    G.socketUtils.setOnConnectListener(onConnect);
+    G.socketUtils.setOnConnectionErrorListener(onConnectionError);
+    G.socketUtils.setOnConnectionErrorTimeOutListener(onConnectionTimeOut);
+    G.socketUtils.setOnDissconnectListener(onDisconnect);
+    G.socketUtils.setOnErrorListener(onError);
+  }
+
+  onConnect(data) {}
+
+  onConnectionTimeOut(data) {}
+
+  onConnectionError(data) {}
+
+  onError(data) {}
+
+  onDisconnect(data) {}
 
   _openLoginScreen(context) async {
     await Navigator.pushReplacementNamed(context, LoginScreen.Route_ID);

@@ -1,9 +1,11 @@
+import 'socket_utils.dart';
 import 'user.dart';
 
 class G {
   static List<User> dummyUsers;
   static User loggedInUser;
   static User toChatUser;
+  static SocketUtils socketUtils;
 
   static void initDummyUsers() {
     User userA = User(id: 1000, name: "A", email: 'testa@gmail.com');
@@ -22,5 +24,11 @@ class G {
         )
         .toList();
     return filteredUser;
+  }
+
+  static initSocket() {
+    if (null == socketUtils) {
+      socketUtils = SocketUtils();
+    }
   }
 }
