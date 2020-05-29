@@ -88,6 +88,12 @@ class _ChatUserScreenState extends State<ChatUserScreen> {
   }
 
   @override
+  void dispose() {
+    G.socketUtils.closeConnection();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -96,7 +102,6 @@ class _ChatUserScreenState extends State<ChatUserScreen> {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              G.socketUtils.closeConnection();
               _openLoginScreen(context);
             },
           ),

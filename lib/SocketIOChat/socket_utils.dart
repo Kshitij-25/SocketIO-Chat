@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:adhara_socket_io/manager.dart';
 import 'package:adhara_socket_io/socket.dart';
+import 'package:chat_socket/SocketIOChat/chat_message_model.dart';
 import 'package:chat_socket/SocketIOChat/user.dart';
 
 class SocketUtils {
@@ -13,6 +14,8 @@ class SocketUtils {
 
   static const String _ON_MESSAGE_RECEIVED = 'receive_message';
   static const String _IS_USER_ONLINE_EVENT = 'check_online';
+  static const String EVENT_SINGLE_CHAT_MESSAGE = 'single_chat_message';
+  static const String EVENT_USER_ONLINE = 'is_user_connected';
 
   static const int STATUS_MESSAGE_NOT_SEND = 10001;
   static const int STATUS_MESSAGE_SEND = 10002;
@@ -90,5 +93,34 @@ class SocketUtils {
       print('Closing Connection');
       _manager.clearInstance(_socket);
     }
+  }
+
+  sendSingleChatMessage(ChatMessageModel chatMessageModel) {
+    if (null == _socket) {
+      print('Cannot Send Mesage');
+      return;
+    }
+    _socket.emit(EVENT_SINGLE_CHAT_MESSAGE, [chatMessageModel.toJson()]);
+  }
+
+  setOnChatMessageReceiveListener(Function onMessageReceived) {
+    _socket.on(_ON_MESSAGE_RECEIVED, (data) {
+      onMessageReceived(data);
+    });
+  }
+
+  setOnlineUserStatusListener(Function onUserStatus) {
+    _socket.on(EVENT_USER_ONLINE, (data) {
+      onUserStatus(data);
+    });
+  }
+
+  checkOnline(ChatMessageModel chatMessageModel) {
+    print('Checking Online User: ${chatMessageModel.to}');
+    if (null == _socket) {
+      print('Cannot Check Online Status');
+      return;
+    }
+    _socket.emit(_IS_USER_ONLINE_EVENT, [chatMessageModel.toJson()]);
   }
 }
