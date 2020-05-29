@@ -7,6 +7,8 @@ import 'package:chat_socket/SocketIOChat/socket_utils.dart';
 import 'package:chat_socket/SocketIOChat/user.dart';
 import 'package:flutter/material.dart';
 
+import 'chat_bubble.dart';
+
 class ChatScreen extends StatefulWidget {
   ChatScreen() : super();
   static const String Route_ID = 'chat_screen';
@@ -125,13 +127,43 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemBuilder: (ctx, index) {
                   ChatMessageModel chatMessageModel = _chatMessages[index];
                   bool fromMe = chatMessageModel.isFromMe;
-                  return Container(
-                    color: fromMe ? Colors.red : Colors.redAccent,
-                    padding: const EdgeInsets.all(20),
-                    margin: const EdgeInsets.all(10),
-                    alignment:
-                        fromMe ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Text(chatMessageModel.message),
+                  // return Container(
+                  //   width: double.infinity,
+                  //   color: fromMe ? Colors.green : Colors.black54,
+                  //   padding: const EdgeInsets.all(20),
+                  //   margin: const EdgeInsets.all(10),
+                  //   alignment:
+                  //       fromMe ? Alignment.centerRight : Alignment.centerLeft,
+                  //   child: Text(
+                  //     chatMessageModel.message,
+                  //     style: TextStyle(
+                  //       color: Colors.white,
+                  //     ),
+                  //   ),
+                  // );
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: Align(
+                      alignment:
+                          fromMe ? Alignment.centerRight : Alignment.centerLeft,
+                      child: CustomPaint(
+                        painter: ChatBubble(
+                          color: fromMe ? Colors.green : Colors.black54,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          child: Stack(
+                            children: <Widget>[
+                              Text(
+                                chatMessageModel.message,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),

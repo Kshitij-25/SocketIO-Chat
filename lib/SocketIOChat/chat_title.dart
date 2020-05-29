@@ -14,18 +14,15 @@ class ChatTitle extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(toChatUser.name),
-          Text(
-            _getStatusText(),
-            style: TextStyle(fontSize: 14, color: Colors.white70),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(toChatUser.name,),
+        Text(
+          _getStatusText(),
+          style: TextStyle(fontSize: 14, color: Colors.white70),
+        ),
+      ],
     );
   }
 
